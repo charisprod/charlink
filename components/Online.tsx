@@ -20,7 +20,7 @@ const Online = ({ section }) => {
       case "dnd":
         return ["🔴"];
       case "offline":
-        return ["🟤"];
+        return ["⚪"];
       case "streaming":
         return ["🟣"];
       default:
