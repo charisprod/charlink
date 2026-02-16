@@ -51,8 +51,11 @@ jobs:
 
       - name: update clone.json
         run: |
-          curl https://raw.githubusercontent.com/agcrisbp/github-clone-count-api/master/main.py > main.py
-          python3 main.py
+            response=$(curl -s -X POST https://api.charisprod.xyz/v1/github/clone \
+              -F "now=@clone.json" \
+              -F "before=@clone_before.json")
+        
+            echo "$response" | jq '.' > clone.json
 
       - name: Update gist with latest count
         run: |
@@ -66,7 +69,7 @@ jobs:
           if [ ! -f CLONE.md ]; then
             shields="https://img.shields.io/badge/dynamic/json?color=success&label=Clone&query=count&url="
             url="https://gist.githubusercontent.com/${{ github.actor }}/${{ steps.set_id.outputs.GIST }}/raw/clone.json"
-            repo="https://github.com/agcrisbp/github-clone-count-api"
+            repo="https://github.com/${{ github.repository }}"
             echo ''> CLONE.md
             echo '
             **Markdown**
