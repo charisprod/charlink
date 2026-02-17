@@ -35,30 +35,12 @@ const Links = () => {
   };
 
   // all user info from bioData
-  const name = bioData[0].name;
-  const url = bioData[0].url;
-  const online = bioData[0].online;
-  const titleImg = bioData[0].titleImg;
-  const avatarImg = bioData[0].avatar;
-  const description = bioData[0].description;
-  const descShow = bioData[0].descShow;
-  const subdesc = bioData[0].subdesc;
-  const subdescShow = bioData[0].subdescShow;
-  const titleImage = "/logo.png";
+  const bio = bioData[0];
+  const avatarShape = bio.nftAvatar ? `nft-clipped` : `oval-clipped`;
 
-  const avatarShape = bioData[0].nftAvatar ? `nft-clipped` : `oval-clipped`
-
-  const descriptionText = descShow ? description : ``
-  const subdescText = subdescShow ? subdesc : ``
-  
-  const bsky = bioData[0].bsky;
-  const bskyUname = bioData[0].bskyUname;
-  const bskyTheme = bioData[0].bskyTheme;
-  
-  const spotify = bioData[0].spotify;
-  const spotifyText = bioData[0].spotifyText;
-  const spotifyUrl = bioData[0].spotifyUrl;
-  const spotifyImg = bioData[0].spotifyImg;
+  const socialIcons = allLinks.filter((el) => el.type === "social" && el.on);
+  const nfts = allLinks.filter((el) => el.type === "nft" && el.on);
+  const other = allLinks.filter((el) => el.type === "other" && el.on);
 
   // Social Embed Logic
   const socialConfig = bioData[0].social ? bioData[0].social.split(',').map(s => s.trim().toLowerCase()) : [];
@@ -77,22 +59,6 @@ const Links = () => {
     }
   };
   
-  // Collect all links filter by type - social, project, nft and other etc=
-  // get data for social section
-  const socialIcons = allLinks.filter((el) => {
-    return el.type === "social" && el.on
-  });
-  
-  // Get data for nfts
-  const nfts = allLinks.filter((el) => {
-    return el.type === "nft" && el.on
-  });
-  
-  // Get data for other section
-  const other = allLinks.filter((el) => {
-    return el.type === "other" && el.on
-  });
-  
   return (
     <LinkWrapper>
       <LinkContainer>
@@ -106,29 +72,29 @@ const Links = () => {
                 <div className={`${avatarShape} avatar-border`}></div>
                 <div className={`${avatarShape} avatar-fill`}></div>
                 <img
-                  src={avatarImg}
+                  src={bio.avatar}
                   className={avatarShape}
                   onContextMenu={(e) => e.preventDefault()}
                 />
-                {online && (
+                {bio.online && (
                   <OnlineWrapper>
-                    <a href={`${url}`}><Online /></a>
+                    <a href={`${bio.url}`}><Online /></a>
                   </OnlineWrapper>
                 )}
               </AvatarWrap>
             </Avatar>
             <Title>
               {/* Using titleimg flag to use image as title or text */}
-              {titleImg ?
-                <img src={titleImage} className="handle" onContextMenu={(e) => e.preventDefault()} /> :
-                <h1>{name}</h1>
+              {bio.titleImg !== false ?
+                <img src={bio.titleImg} className="handle" onContextMenu={(e) => e.preventDefault()} /> :
+                <h1>{bio.name}</h1>
               }
             </Title>
           </LinkHeader>
 
           <LinkBio>
-            {description && <h1>{descriptionText} </h1>}
-            {subdesc && <h4>{subdescText}</h4>}
+            {bio.description && <h1>{bio.descriptionText} </h1>}
+            {bio.subdesc && <h4>{bio.subdescText}</h4>}
           </LinkBio>
 
           <WebLinkWrap>
@@ -149,11 +115,11 @@ const Links = () => {
 
              {/* Spotify Section */}
              <LinkSection>
-             {(spotify) ?
-                <a href={spotifyUrl} target="_blank" rel="noreferrer"><h3>{spotifyText}</h3>
+             {(bio.spotify) ?
+                <a href={bio.spotifyUrl} target="_blank" rel="noreferrer"><h3>{bio.spotifyText}</h3>
                   <img
-                    src={`${spotifyImg}`}
-                    className="custom"
+                    src={`${bio.spotifyImg}`}
+                    width="400px"
                     onContextMenu={(e) => e.preventDefault()}
                   />
                 </a> : ''
@@ -208,7 +174,7 @@ const Links = () => {
 
               {/* Bluesky Section */}
               <LinkSection>
-              {(bsky) ?
+              {(bio.bsky) ?
                 <div className="embed-group">
                   <EmbedToggleButton 
                     onClick={() => toggleEmbed('bsky')}
@@ -221,12 +187,13 @@ const Links = () => {
                   {activeEmbed === 'bsky' && (
                     <div className="embed-item" style={{ marginTop: '10px' }}>
                       <bsky-embed
-                        username={bskyUname}
-                        mode={bskyTheme}
-                        limit="1"
+                        username={bio.bskyUname}
+                        mode={bio.bskyTheme}
+                        limit="5"
                         link-target="_blank"
                         link-image="true"
                         load-more="true"
+                        disable-autoplay="true"
                         custom-styles="* { text-align: left !important; }"
                       ></bsky-embed>
                     </div>
@@ -269,13 +236,13 @@ export default Links;
 const LinkWrapper = styled(Container)``
 
 const LinkContainer = styled.div`
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
-    padding: 24px;
 `
 
 const LinkHeader = styled.div`
@@ -378,8 +345,19 @@ const LinkBio = styled.div`
     }
 `
 
-const TopPart = styled.div``
-const BottomPart = styled.div`margin-bottom: 40px;`
+const TopPart = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+`
+
+const BottomPart = styled.div`
+  padding: 60px 0 40px 0;
+  width: 100%;
+  margin-top: auto;
+`
 
 const LinkFoot = styled.div`
     h4{
@@ -389,6 +367,7 @@ const LinkFoot = styled.div`
 `
 
 const WebLinkWrap = styled.div`
+    width: 100%;
     @media screen and (max-width: ${({ theme }) => theme.deviceSize.tablet}) {
        padding: 0 12px;
     }
@@ -398,8 +377,10 @@ const LinkSection = styled.div`
     padding: 12px 0;
     display: flex;
     margin: 0 auto;
-    max-width: 400px;
+    width: 100%;
+    max-width: 100%;
     flex-direction: column;
+    
     &.social{
       max-width: max-content;
       padding: 0;
@@ -407,6 +388,7 @@ const LinkSection = styled.div`
     }
     .iconsonly{
       display: flex;
+      gap: 10px;
       justify-content: center;
     }
     h3{
@@ -420,13 +402,14 @@ const LinkSection = styled.div`
 
 const EmbedContainer = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 12px 0;
 `
+
 
 const EmbedToggleButton = styled.div`
     padding: 18px 20px;
@@ -443,6 +426,8 @@ const EmbedToggleButton = styled.div`
       font-size: 14px !important;
       margin: 0 !important;
       letter-spacing: 1px !important;
+      text-transform: uppercase;
+      color: ${({ theme }) => theme.text.primary} !important;
     }
 
     &:hover {

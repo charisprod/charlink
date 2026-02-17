@@ -43,9 +43,7 @@ export default class MyDocument extends Document {
                         rel="stylesheet"
                     />
                     
-                    
-                    <script async src="https://cdn.jsdelivr.net/npm/bsky-embed@0.1.5/dist/bsky-embed.es.js"
-                    />
+                    <script type="module" src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" async></script>
                     
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5238358527901368"
                     />
