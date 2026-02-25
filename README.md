@@ -16,7 +16,9 @@ A perfect custom landing page for your links on the world wide web.
 ---
 
 ### Add Your CharLink To Showcase
-- [Showcase Submission](https://charlink-docs.charisprod.xyz/submission).
+- [Showcase Submission](https://charisprod.xyz/submission).
+
+---
 
 ### Support
 <a href="https://www.buymeacoffee.com/agcrisbp" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="32px" width="114px"></a>
